@@ -22,12 +22,12 @@ client.on("ready", () => {
 
 // Gelen mesajları dinle
 client.on("message", (message) => {
-  console.log(`Mesaj geldi:  ${message.toString()}`);
+  console.log(`Mesaj geldi:  ${message.body}`);
 
   // Basit otomatik cevap örneği
-  if (message.body.toLowerCase() === "merhaba") {
+//  if (message.body.toLowerCase() === "merhaba") {
     message.reply("Merhaba! CRM demo botundan cevap.");
-  }
+//  }
 });
 
 // CRM’den mesaj göndermek için fonksiyon
@@ -42,6 +42,11 @@ client.initialize();
 
 // Örnek kullanım: CRM’den tetiklenmiş mesaj
 setTimeout(() => {
-    console.log("ya habibi");
-  sendMessageToCustomer("905338541810", "CRM’den gönderilen test mesajı!");
+     
+  sendMessageToCustomer("38977863796", "selam makedonyalı!");
 }, 30000);
+
+
+
+//905338541810   -- kıbrıs hattım
+//38977863796
