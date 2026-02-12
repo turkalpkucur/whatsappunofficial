@@ -62,6 +62,23 @@ setTimeout(() => {
 }, 30000);
 
 
+app.post("/send-message-to-api", async (req, res) => {
+  try {
+    const { number, text } = req.body;
+
+    if (!number || !text) {
+      return res.status(400).json({ error: "number ve text zorunlu" });
+    }
+
+    await sendMessageToApi(text);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Mesaj gönderilemedi" });
+  }
+});
+
 app.post("/send-message", async (req, res) => {
   try {
     const { number, text } = req.body;

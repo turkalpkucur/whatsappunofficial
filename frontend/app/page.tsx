@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 
 export default function Home() {
   const [text, setText] = useState("");
+    const [textToApi, setTextToApi] = useState("");
 
 const handleSend = async () => {
   try {
@@ -30,11 +31,34 @@ const handleSend = async () => {
   }
 };
 
+const handleSendToApi = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/send-message-to-api", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        number: "905338541810", // burayı input yapabilirsin
+        text: textToApi,
+      }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    alert("Apiye mesaj gönderildi!");
+  } catch (error) {
+    console.error(error);
+    alert("Hata oluştu!");
+  }
+};
+
   return (
     <div style={{ backgroundColor: "#f4f6f9", minHeight: "100vh" }}>
-      <Container className="d-flex justify-content-center   min-vh-100">
+      <Container className="d-flex justify-content-center">
         <Row className="w-100 justify-content-center">
-          <Col xs={12} md={6} lg={4}>
+          <Col xs={12} md={12} lg={12} className="mt-5">
             <Card className="shadow-lg border-0 rounded-4">
               <Card.Body className="p-4">
                 <h4 className="text-center mb-4 fw-bold">
@@ -53,7 +77,7 @@ const handleSend = async () => {
                   </Form.Group>
 
                   <Button
-                    variant="primary"
+                    variant="dark"
                     className="w-100 rounded-3"
                     onClick={handleSend}
                   >
@@ -63,7 +87,38 @@ const handleSend = async () => {
               </Card.Body>
             </Card>
           </Col>
+ 
+          <Col xs={12} md={12} lg={12} className="mt-5">
+            <Card className="shadow-lg border-0 rounded-4">
+              <Card.Body className="p-4">
+                <h4 className="text-center mb-4 fw-bold">
+                 Apiye Mesaj Gönder
+                </h4>
+
+                <Form>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Mesaj</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Mesaj yazın..."
+                      value={textToApi}
+                      onChange={(e) => setTextToApi(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <Button
+                    variant="primary"
+                    className="w-100 rounded-3"
+                    onClick={handleSendToApi}
+                  >
+                 Apiye   Gönder
+                  </Button>
+                </Form>
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
+
       </Container>
     </div>
   );
