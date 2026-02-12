@@ -8,7 +8,9 @@ export default function Home() {
   const [text, setText] = useState("");
 
   const handleSend = async () => {
-    await fetch("http://localhost:3001/send", {
+
+ 
+    await fetch("http://localhost:3000/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
