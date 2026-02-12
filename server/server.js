@@ -99,7 +99,7 @@ app.post("/send-message", async (req, res) => {
 async function sendMessageToApi(messageText) {
   try {
     const response = await axios.post(
-      `https://localhost:7191/api/WPMessages/sendwhatsappmessage?message=${encodeURIComponent(messageText)}`,
+      `https://localhost:7191/api/WPMessages/sendwhatsappmessageviaconnexease?message=${encodeURIComponent(messageText)}`,
       {}, // body boş
       {
         httpsAgent: new https.Agent({
