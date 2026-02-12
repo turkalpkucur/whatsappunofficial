@@ -3,9 +3,11 @@ import qrcode from "qrcode-terminal";
 import axios from "axios";
 import https from "https";
 import express from "express";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 // WhatsApp Web client oluştur
 const client = new Client({
   puppeteer: {
@@ -49,17 +51,7 @@ export async function sendMessageToCustomer(number, text) {
   client.sendMessage(chatId, text);
 }
 
-app.post("/send", async (req, res) => {
-  const { number, message } = req.body;
-
-  try {
-    await sendMessageToCustomer(number, message);
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
+ 
 // Client başlat
 client.initialize();
 
@@ -70,7 +62,22 @@ setTimeout(() => {
 }, 30000);
 
 
+app.post("/send-message", async (req, res) => {
+  try {
+    const { number, text } = req.body;
 
+    if (!number || !text) {
+      return res.status(400).json({ error: "number ve text zorunlu" });
+    }
+
+    await sendMessageToCustomer(number, text);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Mesaj gönderilemedi" });
+  }
+});
 
 async function sendMessageToApi(messageText) {
   try {
@@ -90,7 +97,9 @@ async function sendMessageToApi(messageText) {
   }
 }
 
-
+app.listen(5000, () => {
+  console.log("Express server 5000 portunda çalışıyor");
+});
 //905338541810   -- kıbrıs hattım
 //38977863796
 

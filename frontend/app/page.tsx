@@ -7,20 +7,28 @@ import Form from "react-bootstrap/Form";
 export default function Home() {
   const [text, setText] = useState("");
 
-  const handleSend = async () => {
-
- 
-    await fetch("http://localhost:3000/send", {
+const handleSend = async () => {
+  try {
+    const response = await fetch("http://localhost:5000/send-message", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        number: "38977863796",
-        message: text,
+        number: "905338541810", // burayı input yapabilirsin
+        text: text,
       }),
     });
-  };
+
+    const data = await response.json();
+    console.log(data);
+
+    alert("Mesaj gönderildi!");
+  } catch (error) {
+    console.error(error);
+    alert("Hata oluştu!");
+  }
+};
 
   return (
     <div style={{ backgroundColor: "#f4f6f9", minHeight: "100vh" }}>
