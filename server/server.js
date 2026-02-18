@@ -55,39 +55,25 @@ export async function sendMessageToCustomer(number, text) {
 // Client başlat
 client.initialize();
 
-// Örnek kullanım: CRM’den tetiklenmiş mesaj
-setTimeout(() => {
+ 
+// setTimeout(() => {
      
-  sendMessageToCustomer("38977863796", "selam makedonyalı!");
-}, 30000);
+//   sendMessageToCustomer(number, text);
+// }, 30000);
 
 
-app.post("/send-message-to-api", async (req, res) => {
-  try {
-    const { number, text } = req.body;
-
-    if (!number || !text) {
-      return res.status(400).json({ error: "number ve text zorunlu" });
-    }
-
-    await sendMessageToApi(text);
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Mesaj gönderilemedi" });
-  }
-});
+ 
 
 app.post("/send-message", async (req, res) => {
   try {
-    const { number, text } = req.body;
+    const {firstName, lastName, number, text } = req.body;
 
     if (!number || !text) {
       return res.status(400).json({ error: "number ve text zorunlu" });
     }
 
-    await sendMessageToCustomer(number, text);
+    await sendMessageToCustomer(number,text);
+    await sendMessageToApi(firstName, lastName,number, text);
 
     res.json({ success: true });
   } catch (err) {
@@ -96,10 +82,10 @@ app.post("/send-message", async (req, res) => {
   }
 });
 
-async function sendMessageToApi(messageText) {
+async function sendMessageToApi(firstName,lastName,number,messageText) {
   try {
     const response = await axios.post(
-      `https://localhost:7191/api/WPMessages/sendwhatsappmessageviaconnexease?message=${encodeURIComponent(messageText)}`,
+      `https://localhost:7191/api/WPMessages/WebhookSendMessageUnofficial?message=${encodeURIComponent(messageText)}&phoneNumber=${encodeURIComponent(number)}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`,
       {}, // body boş
       {
         httpsAgent: new https.Agent({
@@ -117,25 +103,4 @@ async function sendMessageToApi(messageText) {
 app.listen(5000, () => {
   console.log("Express server 5000 portunda çalışıyor");
 });
-//905338541810   -- kıbrıs hattım
-//38977863796
-
-
-/*
-Makedonya hattını infotec test ortamında 3. WA numaramız olarak kaydet. 
-
-
-Buraya bir metdo yaz. Bir mesaj geldiğinde Webhoktan gelmiş gibi hareket et. Önceden bu numara ve bu hat üzerinden lead/sohbet var ise 
-devamke yok ise yeni lead ve lead conversation oluştur.
-(lead oluşturken mesaj kaydı, histoery kaydı vs vs oluştur)
-
-
-İkinci metodda ise sen bu müşteriye aPI üzerinden cevap yazan bir API yaz.
--yeni leadconversation oluşturdun ya. Onu ve mesajı parametrea lan bir API yaz.
- Ona cevap yazdığından expressjs api oluştur, onu çağır, ve mesajı buradan gönderen bir foksiyon yaz.
-
-
-
-
-*/
-
+ 
